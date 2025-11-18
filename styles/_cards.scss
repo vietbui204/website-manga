@@ -1,0 +1,7 @@
+.catalog{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:12px}
+.manga-card{background:var(--card);padding:14px;border-radius:var(--radius);box-shadow:0 6px 18px rgba(15,23,42,0.06);display:flex;flex-direction:column;gap:8px}
+.manga-cover{width:100%;height:220px;object-fit:cover;border-radius:6px}
+.manga-title{margin:0;font-size:16px}
+.manga-author{margin:0;color:var(--muted);font-size:13px}
+
+.manga-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}

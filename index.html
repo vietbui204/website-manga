@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Trang đọc truyện - Trang chủ</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>Website đọc truyện (mẫu)</h1>
+      <p>Danh sách truyện mẫu. Click vào một truyện để xem chương.</p>
+    </header>
+
+    <main class="content">
+      <section id="catalog" class="catalog">
+        <!-- Danh sách truyện sẽ được chèn bằng JS từ data/manga.json -->
+      </section>
+    </main>
+
+    <script>
+      // Load manga list from sample JSON and render basic catalog
+      async function loadCatalog(){
+        try{
+          const res = await fetch('data/manga.json');
+          const data = await res.json();
+          const catalog = document.getElementById('catalog');
+          if(!data || !Array.isArray(data)){
+            catalog.innerHTML = '<p>Không có truyện nào.</p>';
+            return;
+          }
+          catalog.innerHTML = data.map(m=>`\n            <article class="manga-card">\n              <h2>${m.title}</h2>\n              <p>${m.author || ''}</p>\n              <p><a href="reader.html?m=${encodeURIComponent(m.slug)}&c=${encodeURIComponent(m.chapters && m.chapters[0] ? m.chapters[0].slug : '')}">Mở chương đầu</a></p>\n            </article>`).join('\n');
+        }catch(e){
+          document.getElementById('catalog').innerHTML = '<p>Lỗi khi tải dữ liệu.</p>';
+        }
+      }
+      loadCatalog();
+    </script>
+  </body>
+</html>

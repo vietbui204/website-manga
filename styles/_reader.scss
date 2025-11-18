@@ -1,0 +1,18 @@
+/* Sections */
+.top-manga, .latest-updates{margin:18px 0}
+.top-manga h2, .latest-updates h2{margin:6px 0 12px}
+
+/* Reader */
+.reader-shell{min-height:calc(100vh - 60px);display:flex;flex-direction:column}
+.reader-header{display:flex;align-items:center;gap:12px;padding:12px 0}
+.reader{flex:1;overflow:auto;padding:12px 0}
+.pages{display:flex;flex-direction:column;align-items:center;gap:18px;padding:0 8px}
+.pages img{max-width:900px;width:100%;height:auto;border-radius:6px;box-shadow:0 6px 20px rgba(2,6,23,0.08)}
+
+.controls{display:flex;justify-content:center;margin-bottom:10px;gap:8px}
+
+.loader{padding:20px;text-align:center;color:var(--muted)}
+
+@media(min-width:900px){
+  .pages{padding:8px 60px}
+}
