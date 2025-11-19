@@ -15,8 +15,8 @@ export default function Navbar(){
       </div>
       <div className="nav-right">
         <SearchBar />
-        <Link href="#">Đăng nhập</Link>
-        <Link href="#">Đăng ký</Link>
+        <Link href="/login">Đăng nhập</Link>
+        <Link href="/register" className="btn-primary">Đăng ký</Link>
       </div>
     </nav>
   );
