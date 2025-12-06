@@ -1,67 +1,75 @@
-# Manga website (mẫu tĩnh)
+# FPTxManga - Modern Manga Reading Platform
 
-Đây là scaffold tĩnh tối giản để đọc truyện bằng ảnh. Mục tiêu: nhanh chóng có thể mở local để test reader.
+FPTxManga là một nền tảng đọc truyện tranh trực tuyến hiện đại, được xây dựng với công nghệ web mới nhất, tập trung vào trải nghiệm người dùng và tính năng quản lý nội dung mạnh mẽ.
 
-Files tạo:
-- `index.html` - danh sách truyện (tải từ `data/manga.json`)
-- `reader.html` - trang đọc cho mỗi chương (tham số query `m` và `c`)
-- `assets/css/style.css` - style cơ bản
-- `assets/js/reader.js` - logic reader, lazy-load
-- `data/manga.json` - sample metadata
+## ✨ Tính Năng Nổi Bật
 
-Thêm ảnh:
-Với sample data ở trên, đặt ảnh ở:
-`assets/images/sample-manga/chapter-001/01.jpg`, `02.jpg`, `03.jpg`
+### 📖 Trải Nghiệm Đọc (Reader)
+- **Giao diện hiện đại**: Thiết kế Dark Mode, tối ưu cho việc đọc truyện.
+- **Lazy Loading**: Tải ảnh mượt mà, tiết kiệm băng thông.
+- **Điều hướng thông minh**: Chuyển chương nhanh chóng, menu điều khiển ẩn hiện tự động.
+- **Lịch sử đọc**: Tự động lưu lại chương đang đọc dở cho từng user.
 
-Chạy local (PowerShell):
-```powershell
-# chạy một webserver tĩnh bằng Python 3
-python -m http.server 8000
-# rồi mở http://localhost:8000/index.html
-```
+### 🛠️ Dashboard Quản Lý (Creator Studio)
+Dành cho người dùng đóng góp nội dung:
+- **Upload Truyện**: Đăng tải truyện mới với đầy đủ thông tin (Ảnh bìa, Tác giả, Thể loại).
+- **Upload Chương**: Hỗ trợ upload nhiều ảnh cùng lúc, tự động đổi tên và sắp xếp file.
+- **Thống kê**: Xem tổng quan lượt xem, lượt theo dõi và số lượng truyện đã đăng (có biểu đồ trực quan).
+- **Quản lý nội dung**: Xem và xoá các truyện/chương đã đăng.
 
-Gợi ý tiếp theo:
-- Thay đổi `data/manga.json` để thêm truyện/chapter
-- Tối ưu ảnh (webp, resize)
-- Thêm một trang admin hoặc sử dụng Firebase/Supabase để lưu metadata và upload ảnh
+### 👤 Người Dùng & Cộng Đồng
+- **Hệ thống Tài khoản**: Đăng ký, Đăng nhập bảo mật (Supabase Auth).
+- **Hồ sơ cá nhân**: Tuỳ chỉnh Avatar, Bút danh (Username) và Đổi mật khẩu.
+- **Bình luận**: Thảo luận dưới mỗi chương truyện (Real-time).
+- **Theo dõi**: Đánh dấu truyện yêu thích để nhận thông báo mới.
+- **Tìm kiếm**: Tìm kiếm nhanh với gợi ý (Search Suggestions).
 
-Supabase upload script
-----------------------
-Nếu bạn chọn Supabase (khuyến nghị), tôi đã thêm một script để upload tất cả ảnh trong `assets/images` lên Supabase Storage
-1. Tạo project trên https://app.supabase.com
-2. Tạo một bucket (ví dụ `manga-images`) hoặc dùng tên mặc định `manga-images`.
-3. Lấy `SUPABASE_URL` và `SUPABASE_SERVICE_ROLE_KEY` từ project (service role key cho phép server upload). KHÔNG public key này.
-4. Trong PowerShell, đặt biến môi trường và chạy upload:
+## 🚀 Công Nghệ Sử Dụng
 
-```powershell
-$env:SUPABASE_URL = "https://xyzcompany.supabase.co"
-$env:SUPABASE_SERVICE_ROLE_KEY = "<service-role-key>"
-$env:SUPABASE_BUCKET = "manga-images"
-node scripts/upload-images.js
-```
+- **Frontend**: [Next.js](https://nextjs.org/) (React Framework)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Database & Auth**: [Supabase](https://supabase.com/) (PostgreSQL)
+- **File Storage**: Supabase Storage
+- **Charts**: [Recharts](https://recharts.org/)
+- **Icons**: Heroicons
 
-Sau upload, ảnh sẽ có public URL:
-`https://<SUPABASE_URL>/storage/v1/object/public/manga-images/<manga>/<chapter>/<page>`
+## 🛠️ Cài Đặt & Chạy Local
 
-Đồng bộ bảng `pages` với Storage
---------------------------------
-Storage chỉ giữ file ảnh; để front-end biết thứ tự trang bạn cần ghi metadata vào Postgres.
+1.  **Clone dự án**:
+    ```bash
+    git clone https://github.com/vietbui204/website-manga.git
+    cd website-manga
+    ```
 
-1. Đảm bảo `data/manga.json` phản ánh slug/chapter và danh sách file (đúng như thư mục trong `assets/images`).
-2. Đặt biến môi trường (giống phần upload) rồi chạy:
-   ```powershell
-   $env:SUPABASE_URL = "https://xyzcompany.supabase.co"
-   $env:SUPABASE_SERVICE_ROLE_KEY = "<service-role-key>"
-   $env:SUPABASE_BUCKET = "manga-images"
-   npm run sync-pages
-   ```
-3. Script `scripts/sync-pages.js` sẽ:
-   - tạo manga/chapter nếu chưa có trong bảng `mangas`/`chapters`
-   - xóa & chèn lại bản ghi `pages` cho từng chapter với đường dẫn dạng `<mangaSlug>/<chapterSlug>/<file>`
+2.  **Cài đặt dependencies**:
+    ```bash
+    npm install
+    ```
 
-Sau bước này, API hoặc helper có thể lấy danh sách trang từ Postgres và chuyển thành URL Storage (public hoặc signed) để render trong reader.
+3.  **Cấu hình môi trường**:
+    Tạo file `.env.local` và điền thông tin Supabase của bạn:
+    ```env
+    NEXT_PUBLIC_SUPABASE_URL=your-project-url
+    NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+    ```
+    *(Lưu ý: Service Role Key chỉ dùng cho các script server-side, cẩn thận khi deploy)*
 
-Next steps
-----------
-- Tôi có thể scaffold Next.js app (đã thêm skeleton) để hiển thị ảnh từ Supabase Storage.
-- Khi bạn sẵn sàng, chạy script upload để chuyển ảnh hiện tại lên Storage.
+4.  **Chạy Development Server**:
+    ```bash
+    npm run dev
+    ```
+    Truy cập [http://localhost:3000](http://localhost:3000) để xem kết quả.
+
+## 🗄️ Cấu Trúc Database (Supabase)
+
+- **Auth**: `auth.users` (Quản lý user tích hợp sẵn của Supabase)
+- **Profiles**: `public.profiles` (Thông tin mở rộng: username, avatar...)
+- **Mangas**: `public.mangas` (Thông tin truyện)
+- **Chapters**: `public.chapters` (Thông tin chương)
+- **Comments**: `public.comments` (Bình luận)
+- **Follows**: `public.follows` (Theo dõi truyện)
+- **Reading History**: `public.reading_history` (Lịch sử đọc)
+
+## 🤝 Đóng Góp
+
+Mọi đóng góp đều được hoan nghênh! Vui lòng tạo Pull Request hoặc Issue để thảo luận.
