@@ -1,0 +1,4 @@
+ALTER TABLE mangas ADD COLUMN IF NOT EXISTS slug text UNIQUE;
+ALTER TABLE mangas ADD COLUMN IF NOT EXISTS author text;
+ALTER TABLE mangas ADD COLUMN IF NOT EXISTS description text;
+ALTER TABLE mangas ADD COLUMN IF NOT EXISTS cover_url text;

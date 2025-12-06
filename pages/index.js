@@ -12,24 +12,24 @@ import Footer from '../src/components/ui/Footer';
 export default function Home({ mangas }) {
 	return (
 		<>
-		{/* Phần comment // End of Selection không hợp lệ trong JSX, nên dùng comment dạng này */}
-				<Navbar />
-				<Header title="MangaSite" />
-				<Container>
-					<TopMangaSection mangas={mangas} />
-					<LatestUpdatesSection mangas={mangas} perPage={12} />
-				</Container>
-				<Footer />
-			</>
+			{/* Phần comment // End of Selection không hợp lệ trong JSX, nên dùng comment dạng này */}
+			<Navbar />
+			<Header title="MangaSite" />
+			<Container>
+				<TopMangaSection mangas={mangas} />
+				<LatestUpdatesSection mangas={mangas} perPage={12} />
+			</Container>
+			<Footer />
+		</>
 	);
 }
 
-export async function getStaticProps(){
+export async function getStaticProps() {
 	// For now, read from local data file as seed
 	const fs = require('fs');
 	const path = require('path');
-	const dataPath = path.join(process.cwd(),'data','manga.json');
-	const raw = fs.readFileSync(dataPath,'utf8');
+	const dataPath = path.join(process.cwd(), 'data', 'manga.json');
+	const raw = fs.readFileSync(dataPath, 'utf8');
 	const mangas = JSON.parse(raw);
 	return { props: { mangas }, revalidate: 10 };
 }

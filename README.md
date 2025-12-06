@@ -43,6 +43,24 @@ node scripts/upload-images.js
 Sau upload, ảnh sẽ có public URL:
 `https://<SUPABASE_URL>/storage/v1/object/public/manga-images/<manga>/<chapter>/<page>`
 
+Đồng bộ bảng `pages` với Storage
+--------------------------------
+Storage chỉ giữ file ảnh; để front-end biết thứ tự trang bạn cần ghi metadata vào Postgres.
+
+1. Đảm bảo `data/manga.json` phản ánh slug/chapter và danh sách file (đúng như thư mục trong `assets/images`).
+2. Đặt biến môi trường (giống phần upload) rồi chạy:
+   ```powershell
+   $env:SUPABASE_URL = "https://xyzcompany.supabase.co"
+   $env:SUPABASE_SERVICE_ROLE_KEY = "<service-role-key>"
+   $env:SUPABASE_BUCKET = "manga-images"
+   npm run sync-pages
+   ```
+3. Script `scripts/sync-pages.js` sẽ:
+   - tạo manga/chapter nếu chưa có trong bảng `mangas`/`chapters`
+   - xóa & chèn lại bản ghi `pages` cho từng chapter với đường dẫn dạng `<mangaSlug>/<chapterSlug>/<file>`
+
+Sau bước này, API hoặc helper có thể lấy danh sách trang từ Postgres và chuyển thành URL Storage (public hoặc signed) để render trong reader.
+
 Next steps
 ----------
 - Tôi có thể scaffold Next.js app (đã thêm skeleton) để hiển thị ảnh từ Supabase Storage.

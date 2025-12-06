@@ -11,6 +11,7 @@ export default function CatchAllReader(){
   const manga = Array.isArray(slug) && slug.length > 0 ? slug[0] : null;
   const chapter = Array.isArray(slug) && slug.length > 1 ? slug[1] : null;
   const [pages, setPages] = useState([]);
+  const [sourceLabel, setSourceLabel] = useState('');
 
   useEffect(()=>{
     if(!router.isReady || !manga || !chapter) return;
@@ -22,6 +23,7 @@ export default function CatchAllReader(){
           const body = await res.json();
           if(body && body.pages && body.pages.length){
             setPages(body.pages.map(p=>p.url));
+            setSourceLabel(body.source === 'database' ? 'Supabase Database + Storage' : 'Supabase Storage');
             console.log('Loaded pages from server API', body.pages.length);
             return;
           }
@@ -48,6 +50,7 @@ export default function CatchAllReader(){
               ? sorted.map(p => `${baseUrl}/storage/v1/object/public/${bucket}/${manga}/${chapter}/${p}`)
               : sorted.map(p => `/assets/images/${manga}/${chapter}/${p}`);
             setPages(urls);
+            setSourceLabel('Local data fallback');
             console.log('Fallback to local data for pages', ch.pages.length);
             return;
           }
@@ -66,7 +69,10 @@ export default function CatchAllReader(){
         <div className="reader-shell py-4">
           <div className="reader-header mb-4 flex items-center justify-between text-sm text-gray-600">
             <a href="/" className="hover:text-gray-900">← Về trang chủ</a>
-            <div className="font-medium">{manga} - {chapter}</div>
+            <div className="font-medium flex flex-col text-right">
+              <span>{manga} - {chapter}</span>
+              {sourceLabel && <span className="text-xs text-gray-400">{sourceLabel}</span>}
+            </div>
           </div>
           <main className="reader">
             <div className="pages mx-auto flex max-w-4xl flex-col gap-3">

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "upload-images": "node scripts/upload-images.js"
+    "upload-images": "node scripts/upload-images.js",
+    "sync-pages": "node scripts/sync-pages.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.31.0",
@@ -17,6 +18,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
+    "dotenv": "^17.2.3",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.18"
   }

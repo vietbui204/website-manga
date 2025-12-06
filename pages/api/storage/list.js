@@ -1,8 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
+import { getChapterPages } from '../../../lib/getChapterPages';
 
-const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const BUCKET = process.env.NEXT_PUBLIC_SUPABASE_BUCKET || 'manga-images';
+const HAS_ADMIN = Boolean(process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY);
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
@@ -13,6 +15,18 @@ export default async function handler(req, res) {
   const prefix = `${manga}/${chapter}`;
 
   try {
+    if (HAS_ADMIN) {
+      try {
+        const { pages } = await getChapterPages({ mangaSlug: manga, chapterSlug: chapter });
+        if (pages?.length) {
+          res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+          return res.status(200).json({ bucket: BUCKET, path: prefix, pages, source: 'database' });
+        }
+      } catch (dbErr) {
+        console.warn('getChapterPages failed, fallback storage.list', dbErr.message);
+      }
+    }
+
     if (!SUPABASE_URL || !ANON_KEY) {
       console.error('Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY');
       return res.status(500).json({ error: 'Server misconfiguration: Supabase URL/Anon key missing' });

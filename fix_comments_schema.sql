@@ -1,0 +1,1 @@
+ALTER TABLE comments ADD COLUMN IF NOT EXISTS manga_slug text REFERENCES mangas(slug) ON DELETE CASCADE;

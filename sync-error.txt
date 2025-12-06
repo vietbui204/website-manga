@@ -1,0 +1,4 @@
+Sync thất bại: Error: Không thể tìm manga slug=absolute-duo: column mangas.slug does not exist
+    at ensureManga (C:\Users\admin1\Desktop\website_manga\scripts\sync-pages.js:61:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async run (C:\Users\admin1\Desktop\website_manga\scripts\sync-pages.js:145:21)
