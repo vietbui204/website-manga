@@ -249,7 +249,7 @@ export default function MangaDetail({ manga }) {
 									</div>
 									<div className="flex justify-between pb-2">
 										<span className="text-gray-400">Người đăng</span>
-										<span className="font-medium text-purple-400">Admin</span>
+										<span className="font-medium text-purple-400">{manga.uploader_name || 'Admin'}</span>
 									</div>
 								</div>
 							</div>
@@ -301,6 +301,21 @@ export async function getStaticProps({ params }) {
 			manga = list.find(x => x.slug === slug) || null;
 		} catch { }
 	}
+
+	// Fetch Uploader Name if user_id exists
+	if (manga && manga.user_id && SUPABASE_URL && SERVICE_KEY) {
+		try {
+			const supabase = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
+			const { data: profile } = await supabase
+				.from('profiles')
+				.select('username')
+				.eq('id', manga.user_id)
+				.single();
+
+			if (profile) manga.uploader_name = profile.username;
+		} catch (e) { console.error(e); }
+	}
+
 	if (!manga) return { notFound: true };
 	return { props: { manga }, revalidate: 60 };
 }

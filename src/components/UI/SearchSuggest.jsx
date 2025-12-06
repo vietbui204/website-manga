@@ -80,7 +80,7 @@ export default function SearchSuggest() {
             <form onSubmit={handleSearchSubmit} className="relative">
                 <input
                     type="text"
-                    className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-4 pr-10 text-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                    className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-4 pr-10 text-sm text-gray-900 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
                     placeholder="Tìm truyện..."
                     value={query}
                     onChange={(e) => {

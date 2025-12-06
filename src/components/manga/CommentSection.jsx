@@ -28,7 +28,31 @@ export default function CommentSection({ mangaSlug }) {
             .eq('manga_slug', mangaSlug)
             .order('created_at', { ascending: false });
 
-        if (!error) setComments(data);
+        if (!error && data) {
+            // Manual fetch profiles
+            const userIds = [...new Set(data.map(c => c.user_id).filter(Boolean))];
+            let profilesMap = {};
+
+            if (userIds.length > 0) {
+                const { data: profiles } = await supabase
+                    .from('profiles')
+                    .select('id, username, avatar_url')
+                    .in('id', userIds);
+
+                if (profiles) {
+                    profiles.forEach(p => {
+                        profilesMap[p.id] = p;
+                    });
+                }
+            }
+
+            const commentsWithUser = data.map(c => ({
+                ...c,
+                user: profilesMap[c.user_id] || null
+            }));
+
+            setComments(commentsWithUser);
+        }
     }
 
     async function handleSubmit(e) {
@@ -90,8 +114,7 @@ export default function CommentSection({ mangaSlug }) {
                     <div key={comment.id} className="comment p-4 bg-white border rounded shadow-sm">
                         <div className="flex justify-between items-start mb-2">
                             <span className="font-semibold text-gray-800">
-                                {/* Fallback to User ID if profile not found/linked */}
-                                User {comment.user_id.slice(0, 8)}
+                                {comment.user?.username || `User ${comment.user_id.slice(0, 8)}`}
                             </span>
                             <span className="text-xs text-gray-500">
                                 {new Date(comment.created_at).toLocaleString('vi-VN')}
