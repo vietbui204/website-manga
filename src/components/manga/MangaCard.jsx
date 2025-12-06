@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function MangaCard({ manga }) {
+export default function MangaCard({ manga, rank }) {
   if (!manga) return null;
 
   const cover = manga.coverUrl || manga.cover_url || '/placeholder.jpg'; // Add a fallback if needed
@@ -56,6 +56,17 @@ export default function MangaCard({ manga }) {
         <div className="absolute top-2 right-2 rounded-md bg-black/60 px-2 py-1 text-xs font-bold text-white backdrop-blur-sm">
           {totalChapters} chương
         </div>
+
+        {/* Rank Badge (Top Left) */}
+        {rank && (
+          <div className={`absolute top-0 left-0 z-10 flex h-10 w-10 items-center justify-center rounded-br-xl font-bold text-white shadow-lg ${rank === 1 ? 'bg-yellow-500 text-lg' :
+            rank === 2 ? 'bg-gray-400 text-base' :
+              rank === 3 ? 'bg-orange-600 text-base' :
+                'bg-black/70 backdrop-blur-sm text-sm'
+            }`}>
+            #{rank}
+          </div>
+        )}
       </div>
 
       {/* Content Overlay (Absolute bottom) */}
@@ -98,6 +109,13 @@ export default function MangaCard({ manga }) {
                 <path fillRule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clipRule="evenodd" />
               </svg>
               {formatNumber(totalComments)}
+            </span>
+            <span className="flex items-center gap-1.5" title="Lượt xem">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+              </svg>
+              {formatNumber(manga.views || 0)}
             </span>
           </div>
 

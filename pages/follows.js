@@ -4,8 +4,8 @@ import { supabase } from '../lib/supabaseClient';
 import Header from '../src/components/UI/Header';
 import Container from '../src/components/UI/Container';
 import MangaList from '../src/components/manga/MangaList';
-import Navbar from '../src/components/ui/Navbar';
-import Footer from '../src/components/ui/Footer';
+import Navbar from '../src/components/UI/Navbar';
+import Footer from '../src/components/UI/Footer';
 
 export default function FollowsPage() {
     const [items, setItems] = useState([]);

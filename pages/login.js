@@ -35,8 +35,11 @@ export default function LoginPage() {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
+    <section className="min-h-screen flex items-center justify-center bg-cover bg-center px-4" style={{ backgroundImage: "url('/auth-bg-v2.png')" }}>
+      {/* Dark overlay for better contrast */}
+      <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
+
+      <div className="relative w-full max-w-md rounded-xl bg-white/90 p-8 shadow-2xl backdrop-blur-md">
         <h1 className="text-2xl font-semibold text-center mb-6">Đăng nhập</h1>
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
