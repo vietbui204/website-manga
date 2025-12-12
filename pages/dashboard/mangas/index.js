@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabaseClient';
-import DashboardLayout from '../../src/components/dashboard/DashboardLayout';
+import { supabase } from '../../../lib/supabaseClient';
+import DashboardLayout from '../../../src/components/dashboard/DashboardLayout';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -65,7 +65,7 @@ export default function DashboardMangas() {
                                     <td className="p-4 font-medium text-white">{m.title}</td>
                                     <td className="p-4 text-gray-400">{m.views || 0}</td>
                                     <td className="p-4 text-right space-x-2">
-                                        <button className="text-blue-400 hover:text-blue-300 text-sm font-bold">Sửa</button>
+                                        <Link href={`/dashboard/mangas/${m.id}`} className="text-blue-400 hover:text-blue-300 text-sm font-bold">Sửa</Link>
                                         <button onClick={() => handleDelete(m.id)} className="text-red-400 hover:text-red-300 text-sm font-bold">Xoá</button>
                                     </td>
                                 </tr>

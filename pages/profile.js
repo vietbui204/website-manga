@@ -94,7 +94,7 @@ export default function ProfilePage() {
                 .upsert({
                     id: user.id,
                     ...updates,
-                    updated_at: new Date(),
+                    // updated_at: new Date(), // Column does not exist in DB yet
                 });
 
             if (error) throw error;

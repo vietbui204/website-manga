@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       const { data, error, count } = await supabaseAdmin
         .from('mangas')
         .select('*, chapters_count, manga_genres(genres(name, slug))', { count: 'exact' })
-        .order('created_at', { ascending: false })
+        .order('updated_at', { ascending: false })
         .range(start, end);
 
       if (error) {
